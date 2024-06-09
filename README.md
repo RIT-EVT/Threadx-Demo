@@ -2,13 +2,15 @@
 - Using stmcubeide version: 1.15.1 and an STM32f446RE
 - RTOS code is in Threadx-Demo/Core/Src/app_threadx.c
 - Using 3 threads with normal priority
-- Thread0 loads a message into a queue
-- When the message is loaded a thread 0 specific count and sum increments by 1
-- Thread1 and 2 take the message and print it over uart
-- When the message is recieved the threads increment a gloabl variable by 1
-- Thread1 and 2 print the count and sum over uart
-- Thread0 prints every piece of data
-
-## To add:
-- In thread0 add a random number instead of a count into the queue
-- Thread0 should print everything
+- Thread0 
+	- loads a message into a queue
+	- When the message is loaded a thread 0 specific count increments by 1
+	- Thread0 sum is the sum of all the random numbers it sends
+	- Thread0 prints every global piece of data
+- Thread1 and thread2 
+	- Each take the message with the random number they recieved and print it over uart
+	- Thread1 sum is the sum of the numbers it recieves
+	- Shared count is a count of the total messages sent
+	- Shared sum is a sum of all the random numbers sent
+	- When the message is recieved the threads increment a gloabl variable by 1
+	- Thread1 and 2 print their resepective counts and messages recieved over uart
