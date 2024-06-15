@@ -54,6 +54,7 @@ TX_MUTEX mutex_0;
 TX_EVENT_FLAGS_GROUP event_flags_0;
 TX_BYTE_POOL byte_pool_0;
 TX_BLOCK_POOL block_pool_0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,16 +65,15 @@ void thread_2_entry(ULONG thread_input);
 /* USER CODE END PFP */
 
 /**
-  * @brief  Application ThreadX Initialization.
-  * @param memory_ptr: memory pointer
-  * @retval int
-  */
-UINT App_ThreadX_Init(VOID *memory_ptr)
-{
-  UINT ret = TX_SUCCESS;
-  TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
+ * @brief  Application ThreadX Initialization.
+ * @param memory_ptr: memory pointer
+ * @retval int
+ */
+UINT App_ThreadX_Init(VOID *memory_ptr) {
+	UINT ret = TX_SUCCESS;
+	TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*) memory_ptr;
 
-  /* USER CODE BEGIN App_ThreadX_Init */
+	/* USER CODE BEGIN App_ThreadX_Init */
 	CHAR *pointer = TX_NULL;
 
 	/* Allocate the stack for thread 0.  */
@@ -105,27 +105,26 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 	/* Create the semaphore used by all threads. */
 	tx_semaphore_create(&semaphore_0, "counting semaphore 0", 1);
 
-  /* USER CODE END App_ThreadX_Init */
+	/* USER CODE END App_ThreadX_Init */
 
-  return ret;
+	return ret;
 }
 
 /**
-  * @brief  MX_ThreadX_Init
-  * @param  None
-  * @retval None
-  */
-void MX_ThreadX_Init(void)
-{
-  /* USER CODE BEGIN  Before_Kernel_Start */
+ * @brief  MX_ThreadX_Init
+ * @param  None
+ * @retval None
+ */
+void MX_ThreadX_Init(void) {
+	/* USER CODE BEGIN  Before_Kernel_Start */
 	HAL_UART_Transmit(&huart2, (uint8_t*) "Kernel starting.\r\n", 20, 100);
-  /* USER CODE END  Before_Kernel_Start */
+	/* USER CODE END  Before_Kernel_Start */
 
-  tx_kernel_enter();
+	tx_kernel_enter();
 
-  /* USER CODE BEGIN  Kernel_Start_Error */
+	/* USER CODE BEGIN  Kernel_Start_Error */
 
-  /* USER CODE END  Kernel_Start_Error */
+	/* USER CODE END  Kernel_Start_Error */
 }
 
 /* USER CODE BEGIN 1 */
@@ -164,7 +163,7 @@ void thread_0_entry(ULONG thread_input) {
 			thread0_sum += num;
 		}
 
-		if (thread0_count % 20 == 0) {
+		if (thread0_count % 10 == 0) {
 			// Format the string with the thread stats in the buffer array
 			sprintf(buffer, "Global count: %lu\r\n"
 					"Global sum: %lu\r\n"
@@ -239,8 +238,6 @@ void thread_1_entry(ULONG thread_input) {
 			HAL_UART_Transmit(&huart2, (uint8_t*) "Thread 1 Error.\r\n", 17,
 					100);
 		}
-
-		tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND * 1);
 	}
 }
 
@@ -255,7 +252,7 @@ void thread_2_entry(ULONG thread_input) {
 	/* This thread simply sits in while-forever-sleep loop.  */
 	while (1) {
 		queue_status = tx_queue_receive(&queue_0, &received_message,
-				TX_WAIT_FOREVER);
+		TX_WAIT_FOREVER);
 		semaphore_status = tx_semaphore_get(&semaphore_0, TX_WAIT_FOREVER);
 
 		if (queue_status == TX_SUCCESS) {
@@ -267,7 +264,8 @@ void thread_2_entry(ULONG thread_input) {
 
 		snprintf(message_buffer, sizeof(message_buffer),
 				"Thread 2 received message: %lu\r\n"
-						"Thread 2 count: %lu\r\nThread 2 sum: %lu\r\n"
+						"Thread 2 count: %lu\r\n"
+						"Thread 2 sum: %lu\r\n"
 						"\r\n", received_message, thread2_count, thread2_sum);
 
 		HAL_UART_Transmit(&huart2, (uint8_t*) message_buffer,
@@ -279,8 +277,6 @@ void thread_2_entry(ULONG thread_input) {
 			HAL_UART_Transmit(&huart2, (uint8_t*) "Thread 2 Error.\r\n", 17,
 					100);
 		}
-
-		tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND * 1);
 	}
 }
 /* USER CODE END 1 */

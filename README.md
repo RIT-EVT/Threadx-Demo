@@ -11,8 +11,8 @@ The point of this demo is to see if threadx is able to run on th EVT platform an
  3. Waits to be able to take the semaphore(When the code is first flashed the semaphore starts in the released state so thread 0 should always get it first).
  4. If the random number is successfully added to the queue a thread 0 specific count increments by 1 and the random number is added to a thread 0 sum.
  5. Releases the semaphore.
- 6. tx_thread_sleep(100) makes the thread sleep for 100 ticks or 1 second.
- 7. Every time the count is incremented 20 times it calculates the average of all thread data and then prints the average along with all other stats in the RTOS.
+ 6. tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND) makes the thread sleep for 1 second.
+ 7. Every time the count is incremented 10 times it calculates the average of all thread data and then prints the average along with all other stats in the RTOS.
  
  ## Thread 1/2:
  1. After thread0 releases the semaphore for the first time thread 1 and thread 2 are created.
@@ -36,5 +36,3 @@ The point of this demo is to see if threadx is able to run on th EVT platform an
 	- Click ok then in the middleware and software packages category of cubemx find X-XUBE-AZURE-F4 and enable it by checking the RTOS ThreadX box.
 	- Under configuration in the AzureRTOS Application tab change memory pool size to be 65536. This ensures we have enough allocated memory space.
  3. In the system core category.
-	- open RCC and change HSE and LSE to be Crystal/Ceramic Resonator.
-	- Open SYS and change the timebase source to be TIM6.
